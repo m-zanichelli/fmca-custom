@@ -27,6 +27,9 @@ find_package(Eigen3 REQUIRED)
 find_package(Python COMPONENTS Interpreter Development)
 find_package(pybind11 CONFIG)
 
+#set(pybind11_INCLUDE_DIR ${pybind11})
+#include_directories(${pybind11_INCLUDE_DIR})
+
 include_directories(${EIGEN3_INCLUDE_DIR})
 message("${CMAKE_MODULE_PATH}")
 message("${EIGEN3_INCLUDE_DIR}")
