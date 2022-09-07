@@ -15,7 +15,16 @@ RUN conda install meshio networkx sympy matplotlib cython future shapely \
 	pytest pytest-cov pytest-runner black mypy flake8 
 
 
-RUN apt-get install libgl1 libglu1 libxcursor1 libxft2 libxinerama1 cmake eigen3-dev pybind11-dev -y 
+RUN apt-get install libgl1 libglu1 libxcursor1 libxft2 libxinerama1 cmake  libeigen3-dev  -y 
+
+RUN  git clone https://github.com/pybind/pybind11.git  && \
+     cd pybind11 && \
+     python3 setup.py build && \
+     python3 setup.py install --prefix=/usr  \
+		--install-headers=/usr/include/pybind11 --skip-build && \
+     mv build/lib/pybind11 /usr/local/lib  && \
+     cp -r /usr/local/lib/pybind11/share/cmake  /usr/lib
+
 
 RUN git clone https://github.com/daveb-dev/fmca-custom.git && \ 
     mkdir build && \
