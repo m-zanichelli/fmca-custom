@@ -24,8 +24,19 @@ for further information.
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 find_package(Eigen3 REQUIRED)
-find_package(Python COMPONENTS Interpreter Development)
-find_package(pybind11 CONFIG)
+#find_package(pybind11 REQUIRED)
+
+find_package(pybind11 2.7.0 REQUIRED CONFIG HINTS ${PYBIND11_DIR} ${PYBIND11_ROOT}
+  $ENV{PYBIND11_DIR} $ENV{PYBIND11_ROOT})
+
+  if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.18.0")
+  find_package(Python 3.9 COMPONENTS Interpreter Development.Module REQUIRED)
+else()
+  find_package(Python 3.9 COMPONENTS Interpreter Development REQUIRED)
+endif()
+
+set(PYBIND11_CPP_STANDARD -std=c++11)
+
 
 #set(pybind11_INCLUDE_DIR ${pybind11})
 #include_directories(${pybind11_INCLUDE_DIR})
