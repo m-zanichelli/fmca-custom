@@ -1,4 +1,4 @@
-apk add git  python3-dev  py3-pip   build-base cmake eigen-dev   && \
+apk add git  cmake eigen-dev   && \
 cd /tmp && \
 git clone https://github.com/pybind/pybind11.git  && \
      cd pybind11 && \

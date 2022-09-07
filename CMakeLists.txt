@@ -38,9 +38,13 @@ endif()
 set(PYBIND11_CPP_STANDARD -std=c++11)
 
 
+set(pybind11_INCLUDE_DIR ${PYBIND11_DIR}/include)
+include_directories(${pybind11_INCLUDE_DIR})
+
 include_directories(${EIGEN3_INCLUDE_DIR})
 message("${CMAKE_MODULE_PATH}")
 message("${EIGEN3_INCLUDE_DIR}")
+message("${PYBIND11_INCLUDE_DIR}")
 
 set (FMCA_PATH ${PROJECT_SOURCE_DIR})
 message("${PROJECT_SOURCE_DIR}")

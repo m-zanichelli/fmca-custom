@@ -1,38 +1,37 @@
-FROM intelpython/intelpython3_core
+FROM alpine:latest
+RUN  apk update && \
+     apk add build-base cmake eigen-dev  && \
+     apk add --no-cache make gfortran openblas-dev  curl && \
+     apk add git python3-dev        
+RUN cd /tmp &&  \
+     curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py  && \ 
+       python3 get-pip.py && \
+       pip3 install setuptools
+     #pip3 install matplotlib numpy scipy 
 
-# Add conda-forge to dependencies
-# 1. intel, 2. conda-forge, 3. defaults
-RUN conda install jupyter -c intel
+RUN  cd /tmp && \
+     git clone https://github.com/pybind/pybind11.git  && \
+     cd pybind11 && \
+     python3 setup.py build && \
+     python3 setup.py install --prefix=/usr  \
+		--install-headers=/usr/include/pybind11 --skip-build && \
+     mv build/lib/pybind11 /usr/local/lib  && \
+     cp -r /usr/local/lib/pybind11/share/cmake  /usr/lib
 
-# Add conda-forge to dependencies
-# 1. intel, 2. conda-forge, 3. defaults
-RUN conda config --append channels conda-forge
-RUN conda config --append channels defaults
+RUN  cd /home && \
+     git clone https://github.com/daveb-dev/fmca-custom.git fmca-src && \
+     cd  fmca-src && \
+     git checkout -b dave/binder && \
+     mkdir build && \
+     cd build &&\
+     cmake  -DPYBIND11_DIR=/usr/local/lib/pybind11 .. &&\
+     make 
 
+RUN  mkdir /home/shared 
+#&& \
+#     cp /home/fmca-src/build/py* .  
 
-# Install porepy dependencies
-# Second line is testing dependencies. Can be removed.
-RUN conda install meshio networkx sympy matplotlib cython future shapely \
-	pytest pytest-cov pytest-runner black mypy flake8  eigen pybind11 
+WORKDIR /home/shared
 
-RUN conda config --append channels anaconda
-
-RUN conda install -c anaconda cmake
-RUN git clone https://github.com/daveb-dev/fmca-custom.git && \ 
-    cd fmca-custom && \
-    mkdir build && \
-    cd build &&\
-    cmake .. &&\
-    make 
-
-ARG NB_USER=fmca
-ARG NB_UID=1000
-ENV USER ${NB_USER}
-ENV NB_UID ${NB_UID}
-ENV HOME /home/${NB_USER}
-
-RUN adduser --disabled-password \
-    --gecos "Default user" \
-    --uid ${NB_UID} \
-    ${NB_USER}
+VOLUME /home/shared
 
