@@ -7,7 +7,7 @@ RUN cd /tmp &&  \
      curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py  && \ 
        python3 get-pip.py && \
        pip3 install setuptools
-     #pip3 install matplotlib numpy scipy 
+      
 
 RUN  cd /tmp && \
      git clone https://github.com/pybind/pybind11.git  && \
@@ -26,7 +26,7 @@ RUN  cd /home && \
      cd build &&\
      cmake  -DPYBIND11_DIR=/usr/local/lib/pybind11 .. &&\
      make 
-
+RUN pip3 install matplotlib numpy scipy
 RUN  mkdir /home/shared 
 #&& \
 #     cp /home/fmca-src/build/py* .  
