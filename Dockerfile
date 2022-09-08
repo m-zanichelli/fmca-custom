@@ -2,7 +2,7 @@ FROM alpine:latest
 RUN  apk update && \
      apk add build-base cmake eigen-dev  && \
      apk add --no-cache make gfortran openblas-dev  curl && \
-     apk add git python3-dev        
+     apk add git python3-dev     py3-numpy 	py3-scipy 	py3-matplotlib    
 RUN cd /tmp &&  \
      curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py  && \ 
        python3 get-pip.py && \
