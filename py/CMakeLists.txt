@@ -25,7 +25,7 @@ ${CMAKE_CURRENT_BINARY_DIR}/FMCA_GP.ipynb)
 
 
 target_link_libraries(FMCA PRIVATE pybind11::module)
-if(APPLE or WIN32)
+if(${CMAKE_HOST_APPLE} or ${CMAKE_HOST_WIN32})
 set_target_properties(FMCA PROPERTIES PREFIX "${PYTHON_MODULE_PREFIX}"
 SUFFIX "${PYTHON_MODULE_EXTENSION}")
 endif()
