@@ -27,8 +27,7 @@ RUN  cd /home && \
      cmake  -DPYBIND11_DIR=/usr/local/lib/pybind11 .. &&\
      make 
 RUN pip3 install matplotlib numpy scipy
-RUN  mkdir /home/shared && \
-     cp -r /home/fmca-src/build/py .  
+RUN  mkdir /home/shared
 
 WORKDIR /home/shared
 
