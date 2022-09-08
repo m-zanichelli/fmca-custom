@@ -21,15 +21,14 @@ RUN  cd /tmp && \
 RUN  cd /home && \
      git clone https://github.com/daveb-dev/fmca-custom.git fmca-src && \
      cd  fmca-src && \
-     git checkout -b dave/binder && \
+     git checkout  dave/binder && \
      mkdir build && \
      cd build &&\
      cmake  -DPYBIND11_DIR=/usr/local/lib/pybind11 .. &&\
      make 
 RUN pip3 install matplotlib numpy scipy
-RUN  mkdir /home/shared 
-#&& \
-#     cp /home/fmca-src/build/py* .  
+RUN  mkdir /home/shared && \
+     cp -r /home/fmca-src/build/py .  
 
 WORKDIR /home/shared
 
