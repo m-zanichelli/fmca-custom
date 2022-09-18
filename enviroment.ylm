@@ -1,18 +1,25 @@
 name: jupyter_dashboards
 channels:
   - conda-forge
-  - nodefaults
-
 dependencies:
+  # Build dependencies
+  - cmake
+  # Host dependencies
+  - xeus=2.0.0
+  - cling=0.8
+  - clangdev=5
+  - llvmdev=5
+  - nlohmann_json=3.9.1
+  - cppzmq
+  - xtl=0.7.2
+  - pugixml
+  - cxxopts=2.1.2
+  # Test dependencies
+  - pytest
+  - jupyter_kernel_test
   - cmake                # and any other build deps
   - git 
-  - cxx-compiler
   - python >=3.9,<3.10    # or whatever version
   - jupyterlab >=3.4.4,<4 # or whatever version
   - pip
-  - pip:
-    - any-deps-not-met-by-conda
-    - matplotlib 
-  - jupyter_dashboards
-  - jupyter_dashboards_bundlers
   
