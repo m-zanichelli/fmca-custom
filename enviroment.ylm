@@ -14,3 +14,7 @@ dependencies:
   - qgrid
   - plotly
   - beakerx
+  - cmake
+  - coreutils
+  - cxx-compiler
+  - make
