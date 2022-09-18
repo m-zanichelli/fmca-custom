@@ -15,5 +15,6 @@ git clone https://github.com/pybind/pybind11.git  && \
      git clone https://gitlab.com/libeigen/eigen.git && \
      cd eigen && \
      mkdir build && cd build && \
-     cmake .. && make && make install && \
+     cmake -D CMAKE_INSTALL_PREFIX=${CONDA_PREFIX} -D CMAKE_C_COMPILER=$CC -D CMAKE_CXX_COMPILER=$CXX -D CMAKE_INSTALL_LIBDIR=${CONDA_PREFIX}/lib .. && \
+     make && make install && \
 cd /home
