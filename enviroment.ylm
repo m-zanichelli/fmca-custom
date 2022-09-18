@@ -1,4 +1,4 @@
-name: jupyter_dashboards
+name: xeus-cling
 channels:
   - conda-forge
 dependencies:
@@ -14,12 +14,11 @@ dependencies:
   - xtl=0.7.2
   - pugixml
   - cxxopts=2.1.2
-  # Test dependencies
-  - pytest
   - jupyter_kernel_test
-  - cmake                # and any other build deps
-  - git 
-  - python >=3.9,<3.10    # or whatever version
-  - jupyterlab >=3.4.4,<4 # or whatever version
-  - pip
-  
+  - cmake
+  - eigen
+  - pybind11
+  - matplotlib
+  - git
+  - scipy
+  - numpy
