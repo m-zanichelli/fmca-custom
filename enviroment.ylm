@@ -1,20 +1,18 @@
 name: jupyter_dashboards
 channels:
-  - tim_shawver
   - conda-forge
-  - defaults
+  - nodefaults
+
 dependencies:
-  - python>3.9
-  - notebook>5.2
+  - cmake                # and any other build deps
+  - git 
+  - cxx-compiler
+  - python >=3.9,<3.10    # or whatever version
+  - jupyterlab >=3.4.4,<4 # or whatever version
+  - pip
+  - pip:
+    - any-deps-not-met-by-conda
+    - matplotlib 
   - jupyter_dashboards
   - jupyter_dashboards_bundlers
-  - matplotlib
-  - folium
-  - ipywidgets=7
-  - qgrid
-  - plotly
-  - beakerx
-  - cmake
-  - coreutils
-  - cxx-compiler
-  - make
+  
