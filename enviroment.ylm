@@ -1,18 +1,16 @@
-name: jupyter_test
+name: jupyter_dashboards
 channels:
+  - tim_shawver
   - conda-forge
   - defaults
-  - anaconda
 dependencies:
   - python>3.6
   - notebook>5.2
-  - cmake>3.21
   - jupyter_dashboards
   - jupyter_dashboards_bundlers
   - matplotlib
   - folium
   - ipywidgets=7
-  - numpy
+  - qgrid
   - plotly
   - beakerx
-  - scipy
