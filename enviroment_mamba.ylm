@@ -1,4 +1,4 @@
-name: jupyter_dashboards
+name: fmca
 channels:
   - conda-forge
 
