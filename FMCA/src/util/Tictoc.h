@@ -53,7 +53,7 @@ clock_t times(struct tms* __buffer) {
 }
 typedef long long suseconds_t;
 
-#elif(UNIX)
+#else
 #include <sys/time.h>
 #endif 
 
