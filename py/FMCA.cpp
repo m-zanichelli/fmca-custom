@@ -60,23 +60,44 @@ struct pySampletTree {
  **/
 struct pyCovarianceKernel {
   pyCovarianceKernel(){};
-  pyCovarianceKernel(const std::string &ktype, FMCA::Scalar l) : l_(l) {
+  pyCovarianceKernel(const std::string &ktype, FMCA::Scalar l, FMCA::Scalar sigma) : l_(l), sigma_(sigma) {
     // transform string to upper and check if kernel is implemented
     ktype_ = ktype;
     for (auto &c : ktype_) c = (char)toupper(c);
-    if (ktype_ == "GAUSSIAN")
-      kernel_ = [this](FMCA::Scalar r) { return exp(-r * r / l_); };
-    else if (ktype_ == "EXPONENTIAL")
-      kernel_ = [this](FMCA::Scalar r) { return exp(-r / l_); };
-    else
+
+    if (ktype_ == "GAUSSIAN_SCALAR")
+      kernel_ = [this](FMCA::Scalar r) { return  sigma_*exp(-r * r / l_); };
+    else if (ktype_ == "EXPONENTIAL_SCALAR")
+      kernel_ = [this](FMCA::Scalar r) { return sigma_*exp(-r / l_); };
+    else    
       assert(false && "desired kernel not implemented");
   }
+  pyCovarianceKernel(const std::string &ktype, FMCA::Vector l, FMCA::Scalar sigma, FMCA::Scalar comp) : lvector_(l), sigma_(sigma), component_(comp) {
+    // transform string to upper and check if kernel is implemented
+    ktype_ = ktype;
+    for (auto &c : ktype_) c = (char)toupper(c);
+
+    if (ktype_ == "GAUSSIAN_MULTIVARIATE")
+      kernel_ = [this](FMCA::Scalar r) { return  sigma_*exp(-r * r ); };
+    else if (ktype_ == "EXPONENTIAL_MULTIVARIATE")
+      kernel_ = [this](FMCA::Scalar r) { return sigma_*exp(-r ); };
+    else    
+      assert(false && "desired kernel not implemented");
+  }
+
 
   template <typename derived, typename otherDerived>
   FMCA::Scalar operator()(const Eigen::MatrixBase<derived> &x,
                           const Eigen::MatrixBase<otherDerived> &y) const {
-    return kernel_((x - y).norm());
+    
+    if ktype_ ==  "GAUSSIAN_SCALAR" or ktype_ == "EXPONENTIAL_SCALAR"
+       return (x(dim)-y(dim))/l(dim)^2 kernel_((x - y).norm());
+    else ktype_ == "GAUSSIAN_MULTIVARIATE" 
+        return  (x(components_)- y(components_))/(lvector_(components_)) kernel_((x - y).norm());
   }
+  
+  
+
   FMCA::Matrix eval(const FMCA::Matrix &PR, const FMCA::Matrix &PC) const {
     FMCA::Matrix retval(PR.cols(), PC.cols());
     for (auto j = 0; j < PC.cols(); ++j)
@@ -84,13 +105,22 @@ struct pyCovarianceKernel {
         retval(i, j) = operator()(PR.col(i), PC.col(j));
     return retval;
   }
+  // eval_gradient 
 
   std::string kernelType() const { return ktype_; }
 
   std::function<FMCA::Scalar(FMCA::Scalar)> kernel_;
   std::string ktype_;
   FMCA::Scalar l_;
+  FMCA::Scalar sigma_;
+  FMCA::Vector lvector_;
+  FMCA::Scalar components_;
+  
+  
 };
+
+
+
 ////////////////////////////////////////////////////////////////////////////////
 /**
  *  \brief wrapper class for an H2Matrix
@@ -312,7 +342,8 @@ PYBIND11_MODULE(FMCA, m) {
   //////////////////////////////////////////////////////////////////////////////
   py::class_<pyCovarianceKernel> pyCovarianceKernel_(m, "CovarianceKernel");
   pyCovarianceKernel_.def(py::init<>());
-  pyCovarianceKernel_.def(py::init<const std::string &, FMCA::Scalar>());
+  pyCovarianceKernel_.def(py::init<const std::string &, FMCA::Scalar>(),FMCA::Scalar>() ) ;
+  pyCovarianceKernel_.def(py::init<const std::string &, FMCA::Vector, FMCA::Scalar,FMCA::Scalar>() ) ;
   pyCovarianceKernel_.def("kernelType", &pyCovarianceKernel::kernelType);
   pyCovarianceKernel_.def("eval", &pyCovarianceKernel::eval,
                           py::arg().noconvert(), py::arg().noconvert());
